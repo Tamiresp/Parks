@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:parks/features/sing_up.dart';
 import 'package:parks/services/google_sign_in.dart';
 import 'package:parks/util/app_colors.dart';
 import 'package:parks/util/back_widget.dart';
@@ -15,7 +16,6 @@ class SettingsPage extends StatelessWidget {
         body: Stack(
       children: [
         BackWidget(),
-        
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -73,6 +73,7 @@ class SettingsPage extends StatelessWidget {
                             context,
                             listen: false);
                         provider.logoutGoogle();
+                        navigateToSignUpPage(context);
                       },
                       icon: Icon(Icons.logout),
                       label: Text('Sair da Conta')),
@@ -81,5 +82,10 @@ class SettingsPage extends StatelessWidget {
         )
       ],
     ));
+  }
+
+  navigateToSignUpPage(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) => SignupPage()));
   }
 }

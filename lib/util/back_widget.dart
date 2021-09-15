@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:parks/features/logged_page.dart';
 
 import 'app_colors.dart';
 
@@ -37,9 +36,5 @@ class BackWidget extends StatelessWidget {
             ),
           ],
         ));
-  }
-  navigateToHomePage(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) => LoggedPage()));
   }
 }
