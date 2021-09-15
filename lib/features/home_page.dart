@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:parks/features/logged_page.dart';
 import 'package:parks/features/sing_up.dart';
+import 'package:parks/util/app_strings.dart';
 
 
 class HomePage extends StatelessWidget {
@@ -18,7 +19,7 @@ class HomePage extends StatelessWidget {
               return LoggedPage();
             } else if (snapshot.hasError) {
               return Center(
-                child: Text('Algo deu errado!'),
+                child: Text(AppStrings.errorText),
               );
             } else {
               return SignupPage();

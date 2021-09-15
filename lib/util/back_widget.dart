@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:parks/util/app_strings.dart';
 
 import 'app_colors.dart';
 
@@ -30,7 +31,7 @@ class BackWidget extends StatelessWidget {
                   Navigator.of(context, rootNavigator: true).pop();
                 }),
             Text(
-              'Voltar',
+              AppStrings.backButtonText,
               style: textStyle,
               textAlign: TextAlign.center,
             ),

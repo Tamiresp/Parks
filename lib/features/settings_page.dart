@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:parks/features/home_page.dart';
 import 'package:parks/features/sing_up.dart';
+import 'package:parks/services/facebook_sign.dart';
 import 'package:parks/services/google_sign_in.dart';
 import 'package:parks/util/app_colors.dart';
+import 'package:parks/util/app_strings.dart';
 import 'package:parks/util/back_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +27,7 @@ class SettingsPage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(left: 16, top: 50),
                   child: Text(
-                    'Configurações',
+                    AppStrings.settingsText,
                     style: TextStyle(
                         color: AppColors.primaryTextColor,
                         fontWeight: FontWeight.bold,
@@ -72,11 +75,21 @@ class SettingsPage extends StatelessWidget {
                         final provider = Provider.of<GoogleSignInProvider>(
                             context,
                             listen: false);
+                      
                         provider.logoutGoogle();
+
+                        final providerFacebook = Provider.of<FacebookSignInProvider>(
+                            context,
+                            listen: false);
+                      
+                        provider.logoutGoogle();
+
+                        providerFacebook.logoutFacebook();
+
                         navigateToSignUpPage(context);
                       },
                       icon: Icon(Icons.logout),
-                      label: Text('Sair da Conta')),
+                      label: Text(AppStrings.logoutButtonText)),
                 )),
           ],
         )
@@ -85,7 +98,7 @@ class SettingsPage extends StatelessWidget {
   }
 
   navigateToSignUpPage(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) => SignupPage()));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (BuildContext context) => HomePage()));
   }
 }
