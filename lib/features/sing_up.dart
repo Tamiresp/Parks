@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:parks/services/facebook_sign.dart';
-import 'package:parks/services/google_sign_in.dart';
+import 'package:parks/services/social_sign_in.dart';
 import 'package:provider/provider.dart';
 
 class SignupPage extends StatelessWidget {
@@ -14,7 +13,7 @@ class SignupPage extends StatelessWidget {
             ElevatedButton.icon(
                 onPressed: () {
                   final provider =
-                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                      Provider.of<SignInProvider>(context, listen: false);
                   provider.googleLogin();
                 },
                 icon: FaIcon(
@@ -29,7 +28,7 @@ class SignupPage extends StatelessWidget {
             ElevatedButton.icon(
                 onPressed: () {
                   final provider =
-                      Provider.of<FacebookSignInProvider>(context, listen: false);
+                      Provider.of<SignInProvider>(context, listen: false);
                   provider.fbSignIn();
                 },
                 icon: FaIcon(

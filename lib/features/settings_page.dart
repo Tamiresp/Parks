@@ -2,9 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:parks/features/home_page.dart';
-import 'package:parks/features/sing_up.dart';
-import 'package:parks/services/facebook_sign.dart';
-import 'package:parks/services/google_sign_in.dart';
+import 'package:parks/services/social_sign_in.dart';
 import 'package:parks/util/app_colors.dart';
 import 'package:parks/util/app_strings.dart';
 import 'package:parks/util/back_widget.dart';
@@ -72,24 +70,21 @@ class SettingsPage extends StatelessWidget {
                   padding: EdgeInsets.only(left: 16),
                   child: TextButton.icon(
                       onPressed: () {
-                        final provider = Provider.of<GoogleSignInProvider>(
-                            context,
-                            listen: false);
-                      
-                        provider.logoutGoogle();
+                        final provider =
+                            Provider.of<SignInProvider>(context, listen: false);
 
-                        final providerFacebook = Provider.of<FacebookSignInProvider>(
-                            context,
-                            listen: false);
-                      
-                        provider.logoutGoogle();
-
-                        providerFacebook.logoutFacebook();
+                        provider.logout();
 
                         navigateToSignUpPage(context);
                       },
-                      icon: Icon(Icons.logout),
-                      label: Text(AppStrings.logoutButtonText)),
+                      icon: Icon(
+                        Icons.logout,
+                        color: AppColors.primaryTextColor,
+                      ),
+                      label: Text(
+                        AppStrings.logoutButtonText,
+                        style: TextStyle(color: AppColors.primaryTextColor),
+                      )),
                 )),
           ],
         )
@@ -98,7 +93,7 @@ class SettingsPage extends StatelessWidget {
   }
 
   navigateToSignUpPage(BuildContext context) {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) => HomePage()));
   }
 }
