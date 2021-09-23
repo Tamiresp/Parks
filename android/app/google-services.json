@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "988674611265-53erltb2o2dr8lc5vp0th7kf3ed99fbo.apps.googleusercontent.com",
+          "client_id": "988674611265-csd9obs7usj7fst28enu7572mmu2ss7c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.parks",
-            "certificate_hash": "538e97f3e70d1a870d30df576f4e203f4baa91d1"
+            "certificate_hash": "d426053adb5e59ac7d654f6b52b93cad976c5fab"
           }
         },
         {
