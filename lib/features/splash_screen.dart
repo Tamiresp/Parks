@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:parks/features/tab_page.dart';
+import 'package:parks/list/parks_list_page.dart';
 import 'package:parks/util/app_colors.dart';
 import 'home_screen.dart';
 
@@ -15,7 +17,7 @@ class _SplashState extends State<Splash> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     Future.delayed(Duration(seconds: 4)).then((_) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MyHomePage()));
+          context, MaterialPageRoute(builder: (context) => TabPage()));
     });
   }
 

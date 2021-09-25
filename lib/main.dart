@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:parks/features/splash_screen.dart';
 
 void main() {
-  runApp(MaterialApp(
-    home: Splash(),
-  ));
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(home: Splash());
+  }
 }
