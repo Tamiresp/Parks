@@ -1,48 +1,51 @@
-class Parks {
-  final List<Records> records;
-
-  Parks(this.records);
-
-  // Parks.fromJson(List<Records> json)
-  //     : records = json['records'] as List<Records>;
-
-  // Map<dynamic, dynamic> toJson() => <dynamic, dynamic>{
-  //       'records': records,
-  //       'text': text,
-  //     };
-}
-
 class Records {
-  final int _id;
+  final int id;
   final String nome_equip_urbano;
   final String tipo_equip_urbano;
   final String endereco_equip_urbano;
-  final int codigo_logradouro;
+  final double codigo_logradouro;
   final String lei_equip_urbano;
   final String nome_oficial_equip_urbano;
   final String area;
   final String perimetro;
-  final int codigo_bairro;
-  final int nome_bairro;
-  final int latitude;
-  final int longitude;
-  final String tag;
-  final String image;
+  final double codigo_bairro;
+  final String nome_bairro;
+  final double latitude;
+  final double longitude;
 
   Records(
-      this._id,
-      this.nome_equip_urbano,
-      this.tipo_equip_urbano,
-      this.endereco_equip_urbano,
-      this.codigo_logradouro,
-      this.lei_equip_urbano,
-      this.nome_oficial_equip_urbano,
-      this.area,
-      this.perimetro,
-      this.codigo_bairro,
-      this.nome_bairro,
-      this.latitude,
-      this.longitude,
-      this.tag,
-      this.image);
+      {required this.id,
+      required this.nome_equip_urbano,
+      required this.tipo_equip_urbano,
+      required this.endereco_equip_urbano,
+      required this.codigo_logradouro,
+      required this.lei_equip_urbano,
+      required this.nome_oficial_equip_urbano,
+      required this.area,
+      required this.perimetro,
+      required this.codigo_bairro,
+      required this.nome_bairro,
+      required this.latitude,
+      required this.longitude});
+
+  factory Records.fromRTDB(Map<String, dynamic> data) {
+    return Records(
+        id: data['id'] ?? 0,
+        nome_equip_urbano:
+            data['nome_equip_urbano'] ?? 'Nome Equipamento Urbano',
+        tipo_equip_urbano:
+            data['tipo_equip_urbano'] ?? 'Nome Equipamento Urbano',
+        endereco_equip_urbano:
+            data['endereco_equip_urbano'] ?? 'Nome Equipamento Urbano',
+        codigo_logradouro: data['codigo_logradouro'] ?? 0,
+        lei_equip_urbano: data['lei_equip_urbano'] ?? 'Nome Equipamento Urbano',
+        nome_oficial_equip_urbano:
+            data['nome_oficial_equip_urbano'] ?? 'Nome Equipamento Urbano',
+        area: data['area'] ?? 'Nome Equipamento Urbano',
+        perimetro: data['perimetro'] ?? 'Nome Equipamento Urbano',
+        codigo_bairro: data['codigo_bairro'] ?? 0,
+        nome_bairro: data['nome_bairro'] ?? 'Nome Equipamento Urbano',
+        latitude: data['latitude'] ?? 0,
+        longitude: data['longitude'] ?? 0);
+  }
 }

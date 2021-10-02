@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:parks/list/events_list_page.dart';
 import 'package:parks/list/favorites_list_page.dart';
 import 'package:parks/list/parks_list_page.dart';
+import 'package:parks/util/app_colors.dart';
 
 class TabPage extends StatefulWidget {
   const TabPage({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class TabPageState extends State<TabPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: AppColors.defaultColor,
         onTap: _onItemTapped,
       ),
     );

@@ -1,24 +1,49 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:parks/data/parks_fix_list.dart';
-import 'package:parks/list/events_item.dart';
+import 'package:parks/util/app_colors.dart';
 
-class EventsListPage extends StatelessWidget {
-  final List<Parks> events = eventsList;
+class EventsListPage extends StatefulWidget {
+  EventsListPage({Key? key, this.title}) : super(key: key);
+  final String? title;
+
+  @override
+  EventsListPageState createState() => EventsListPageState();
+}
+
+class EventsListPageState extends State<EventsListPage> {
+  final dbRef = FirebaseDatabase.instance.reference().child("events");
+  List<Map<dynamic, dynamic>> lists = [];
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-          color: Colors.white,
-          margin: EdgeInsets.only(top: 21),
-          child: ListView.builder(
-              padding: const EdgeInsets.all(8),
-              itemCount: events.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  child: EventsItem(event: events[index]),
-                  onTap: () {},
-                );
-              })),
-    );
+    return Scaffold(
+        body: FutureBuilder(
+            future: dbRef.once(),
+            builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+              if (snapshot.hasData) {
+                lists.clear();
+                List<dynamic> values = snapshot.data!.value;
+                values.forEach((values) {
+                  lists.add(values);
+                });
+                return new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: lists.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                          margin: EdgeInsets.only(left: 16, right: 16, top: 8),
+                          child: Text(
+                            lists[index]["name"],
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ));
+                    });
+              }
+              return Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.defaultColor,
+                ),
+              );
+            }));
   }
 }
