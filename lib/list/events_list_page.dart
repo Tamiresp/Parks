@@ -31,11 +31,16 @@ class EventsListPageState extends State<EventsListPage> {
                     itemCount: lists.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Container(
+                          height: 50,
+                          color: Colors.white,
                           margin: EdgeInsets.only(left: 16, right: 16, top: 8),
-                          child: Text(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child:  Text(
                             lists[index]["name"],
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: 24, fontWeight: FontWeight.w600),
+                          ),
                           ));
                     });
               }

@@ -36,6 +36,7 @@ dependencies:
   provider: 
   font_awesome_flutter: ^9.1.0
   firebase_database:
+  fancy_bottom_navigation: ^0.3.2
 
 dev_dependencies:
   flutter_test:
