@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:parks/util/header_page.dart';
 import 'package:parks/features/sing_up.dart';
 import 'package:parks/features/tab_page.dart';
 import 'package:parks/util/app_strings.dart';
