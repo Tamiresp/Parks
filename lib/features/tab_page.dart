@@ -1,8 +1,8 @@
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 import 'package:flutter/material.dart';
-import 'package:parks/list/events_list_page.dart';
-import 'package:parks/list/favorites_list_page.dart';
-import 'package:parks/list/parks_list_page.dart';
+import 'package:parks/list/events/events_list_page.dart';
+import 'package:parks/list/favorites/favorites_list_page.dart';
+import 'package:parks/list/parks/parks_list_page.dart';
 import 'package:parks/util/app_colors.dart';
 
 class TabPage extends StatefulWidget {
