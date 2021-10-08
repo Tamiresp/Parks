@@ -16,8 +16,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIOverlays([]);
     Future.delayed(Duration(seconds: 4)).then((_) {
       _initializeFirebase();
       Navigator.pushReplacement(
