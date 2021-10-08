@@ -1,9 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:parks/data/parks_data.dart';
+import 'package:parks/list/parks/park_detail_page.dart';
 import 'package:parks/list/parks/park_item.dart';
 import 'package:parks/util/app_colors.dart';
-import 'package:parks/util/header_page.dart';
 
 class ParksListPage extends StatefulWidget {
   ParksListPage({Key? key, this.title}) : super(key: key);
@@ -39,7 +39,10 @@ class ParkListPageState extends State<ParksListPage> {
                         child: ParkItem(
                           record: record,
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          navigateToParkDetailPage(
+                              context: context, model: record);
+                        },
                       );
                     });
               }
@@ -47,5 +50,11 @@ class ParkListPageState extends State<ParksListPage> {
                 child: CircularProgressIndicator(color: AppColors.defaultColor),
               );
             }));
+  }
+
+  navigateToParkDetailPage(
+      {required BuildContext context, required Records model}) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => ParkDetailPage(model: model)));
   }
 }
