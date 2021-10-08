@@ -17,14 +17,17 @@ class BackWidget extends StatelessWidget {
 
     return Container(
         alignment: Alignment.topLeft,
+        padding: EdgeInsets.all(16),
         child: Row(
           children: [
             TextButton.icon(
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
                 },
-              
-                icon: Icon(Icons.arrow_back_ios, color: AppColors.primaryTextColor,),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: AppColors.primaryTextColor,
+                ),
                 label: Text(
                   AppStrings.backButtonText,
                   style: textStyle,

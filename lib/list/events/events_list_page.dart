@@ -34,7 +34,9 @@ class EventsListPageState extends State<EventsListPage> {
                     itemBuilder: (BuildContext context, int index) {
                       final event = Events.fromJson(lists[index]);
                       return GestureDetector(
-                        child: EventsItemPage(event: event,),
+                        child: EventsItemPage(
+                          event: event,
+                        ),
                         onTap: () {},
                       );
                     });
