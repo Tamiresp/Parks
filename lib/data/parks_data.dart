@@ -39,8 +39,7 @@ class Records {
         enderecoEquipUrbano =
             data['endereco_equip_urbano'] ?? 'Nome Equipamento Urbano',
         codigoLogradouro = data['codigo_logradouro'] ?? 0.0,
-        leiEquipUrbano =
-            data['lei_equip_urbano'] ?? 'Nome Equipamento Urbano',
+        leiEquipUrbano = data['lei_equip_urbano'] ?? 'Nome Equipamento Urbano',
         nomeOficialEquipUrbano =
             data['nome_oficial_equip_urbano'] ?? 'Nome Equipamento Urbano',
         area = data['area'] ?? 'Nome Equipamento Urbano',
@@ -50,4 +49,23 @@ class Records {
         latitude = data['latitude'] ?? 0.0,
         longitude = data['longitude'] ?? 0.0,
         image = data['image'] ?? 'https://picsum.photos/200/300?grayscale';
+
+  Map<dynamic, dynamic> toJson() {
+    final Map<dynamic, dynamic> data = new Map<dynamic, dynamic>();
+    data['id'] = this.id;
+    data['nome_equip_urbano'] = this.nomeEquipUrbano;
+    data['tipo_equip_urbano'] = this.tipoEquipUrbano;
+    data['endereco_equip_urbano'] = this.enderecoEquipUrbano;
+    data['codigo_logradouro'] = this.codigoLogradouro;
+    data['lei_equip_urbano'] = this.leiEquipUrbano;
+    data['nome_oficial_equip_urbano'] = this.nomeOficialEquipUrbano;
+    data['area'] = this.area;
+    data['perimetro'] = this.perimetro;
+    data['codigo_bairro'] = this.codigoBairro;
+    data['nome_bairro'] = this.nomeBairro;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['image'] = this.image;
+    return data;
+  }
 }

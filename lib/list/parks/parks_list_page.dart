@@ -14,14 +14,17 @@ class ParksListPage extends StatefulWidget {
 }
 
 class ParkListPageState extends State<ParksListPage> {
-  final dbRef = FirebaseDatabase.instance.reference().child("records");
+  final dbRef = FirebaseDatabase.instance.reference();
+
   List<Map<dynamic, dynamic>> lists = [];
 
   @override
   Widget build(BuildContext context) {
+    final dbRefRecords = dbRef.child("records");
+    final dbRefFavorites = dbRef.child("favorites/");
     return Scaffold(
         body: FutureBuilder(
-            future: dbRef.once(),
+            future: dbRefRecords.once(),
             builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
               if (snapshot.hasData) {
                 lists.clear();
@@ -38,6 +41,7 @@ class ParkListPageState extends State<ParksListPage> {
                       return GestureDetector(
                         child: ParkItem(
                           record: record,
+                          dbRef: dbRefFavorites,
                         ),
                         onTap: () {
                           navigateToParkDetailPage(
