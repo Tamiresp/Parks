@@ -43,7 +43,8 @@ class FavoritesListPageState extends State<FavoritesListPage> {
                     }
                   });
 
-                  return new ListView.builder(
+                  if (lists.isNotEmpty) {
+return new ListView.builder(
                       shrinkWrap: true,
                       itemCount: lists.length,
                       itemBuilder: (BuildContext context, int index) {
@@ -59,6 +60,11 @@ class FavoritesListPageState extends State<FavoritesListPage> {
                           },
                         );
                       });
+                  } else {
+                  return new Center(
+                    child: Text('Sem favoritos adicionados'),
+                  );
+                }
                 } else {
                   return new Center(
                     child: Text('Sem favoritos adicionados'),
