@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:parks/data/parks_data.dart';
-import 'package:parks/features/settings_page.dart';
 import 'package:parks/list/parks/park_detail_page.dart';
 import 'package:parks/list/parks/park_item.dart';
 import 'package:parks/util/app_colors.dart';
@@ -99,6 +98,6 @@ class FavoritesListPageState extends State<FavoritesListPage> {
   navigateToParkDetailPage(
       {required BuildContext context, required Records model}) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => ParkDetailPage(model: model)));
+        builder: (BuildContext context) => ParkDetailPage(model)));
   }
 }

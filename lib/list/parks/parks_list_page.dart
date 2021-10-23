@@ -77,6 +77,6 @@ class ParkListPageState extends State<ParksListPage> {
   navigateToParkDetailPage(
       {required BuildContext context, required Records model}) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => ParkDetailPage(model: model)));
+        builder: (BuildContext context) => ParkDetailPage(model)));
   }
 }
