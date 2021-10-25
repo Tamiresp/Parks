@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:parks/util/app_colors.dart';
 
 class MapPage extends StatefulWidget {
   MapPage({required this.latitude, required this.longitude});
@@ -26,7 +25,7 @@ class _MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 200,
+        height: 200,
         child: GoogleMap(
           myLocationEnabled: true,
           onMapCreated: _onMapCreated,

@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:parks/data/events_data.dart';
 import 'package:parks/data/parks_data.dart';
 import 'package:parks/list/events/event_item.dart';
-import 'package:parks/list/parks/park_item.dart';
-import 'package:parks/list/parks/parks_list_event.dart';
-import 'package:parks/list/parks/parks_list_page.dart';
+import 'package:parks/list/parks/park_detail_page.dart';
 import 'package:parks/util/app_colors.dart';
 import 'package:parks/util/search_widget.dart';
 import 'package:parks/util/title_widget.dart';
@@ -77,12 +75,12 @@ class EventsListPageState extends State<EventsListPage> {
   }
 
   _navigateToParkListPage(
-      {required BuildContext context,
-      required List<Map<dynamic, dynamic>> records}) {
+      {required BuildContext context, required Records records}) {
+    Center(
+      child: CircularProgressIndicator(color: AppColors.defaultColor),
+    );
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => ParksListEventPage(
-              records: records,
-            )));
+        builder: (BuildContext context) => ParkDetailPage(records)));
   }
 
   _getRecord(Events event) {
@@ -96,11 +94,14 @@ class EventsListPageState extends State<EventsListPage> {
         List<dynamic> values = snapshot.value;
 
         records.clear();
+
         values.forEach((values) {
           records.add(values);
         });
 
-        _navigateToParkListPage(context: context, records: records);
+        final record = Records.fromJson(records[0]);
+
+        _navigateToParkListPage(context: context, records: record);
       }
     });
   }

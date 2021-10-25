@@ -19,6 +19,7 @@ class EventItemPageState extends State<EventsItemPage> {
   Widget build(BuildContext context) {
     return Container(
         height: 50,
+        color: Colors.white,
         margin: EdgeInsets.only(left: 16, right: 16, top: 8),
         child: Align(
           alignment: Alignment.centerLeft,

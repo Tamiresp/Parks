@@ -24,7 +24,7 @@ class TitleWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                icon: Icon(Icons.settings),
+                icon: Icon(Icons.account_circle_outlined),
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => SettingsPage()));
