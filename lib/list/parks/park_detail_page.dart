@@ -128,8 +128,10 @@ class ParkDetailPageState extends State<ParkDetailPage> {
                         ),
                       ],
                     ),
-                    Text(model.enderecoEquipUrbano,
-                        style: TextStyle(fontSize: 12)),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(model.enderecoEquipUrbano,
+                        style: TextStyle(fontSize: 12), textAlign: TextAlign.justify,),),
                     SizedBox(
                       height: 8,
                     ),
@@ -488,7 +490,7 @@ class ParkDetailPageState extends State<ParkDetailPage> {
                   backgroundImage: NetworkImage(user.photoURL!),
                 ),
                 SizedBox(width: 8),
-                Text(user.displayName!)
+                Text(user.displayName!, style: TextStyle(fontSize: 12),)
               ],
             ),
             content: Container(
