@@ -31,29 +31,40 @@ class EventsListPageState extends State<EventsListPage> {
       children: [
         Padding(
           padding: EdgeInsets.only(top: 100),
-          child: FutureBuilder(
-              future: dbRef.once(),
-              builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+          child: StreamBuilder(
+              stream: dbRef.onValue,
+              builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   lists.clear();
-                  List<dynamic> values = snapshot.data!.value;
-                  values.forEach((values) {
-                    lists.add(values);
-                  });
-                  return new ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: lists.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final event = Events.fromJson(lists[index]);
-                        return GestureDetector(
-                          child: EventsItemPage(
-                            event: event,
-                          ),
-                          onTap: () {
-                            _getRecord(event);
-                          },
-                        );
-                      });
+
+                  if ((snapshot.data! as Event).snapshot.value != null) {
+                    final events = Map<String, dynamic>.from(
+                        (snapshot.data! as Event).snapshot.value);
+                    events.forEach((key, value) {
+                      final nextComment = Map<String, dynamic>.from(value);
+
+                      lists.add(nextComment);
+                    });
+
+                    return new ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: lists.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final event = Events.fromJson(lists[index]);
+                          return GestureDetector(
+                            child: EventsItemPage(
+                              event: event,
+                            ),
+                            onTap: () {
+                              _getRecord(event);
+                            },
+                          );
+                        });
+                  } else {
+                    return new Center(
+                      child: Text('Sem eventos adicionados'),
+                    );
+                  }
                 }
                 return Center(
                   child:
@@ -90,17 +101,12 @@ class EventsListPageState extends State<EventsListPage> {
         .once()
         .then((DataSnapshot snapshot) {
       if (snapshot.exists) {
-        records.clear();
-        List<dynamic> values = snapshot.value;
+        final favorites = Map<String, dynamic>.from(snapshot.value);
 
-        records.clear();
-
-        values.forEach((values) {
-          records.add(values);
+        var record;
+        favorites.forEach((key, value) {
+          record = Records.fromJson(value);
         });
-
-        final record = Records.fromJson(records[0]);
-
         _navigateToParkListPage(context: context, records: record);
       }
     });

@@ -27,7 +27,7 @@ class ParkDetailPageState extends State<ParkDetailPage> {
   final Records model;
   final dbRefFavorites =
       FirebaseDatabase.instance.reference().child("favorites/");
-  final dbRefEvents = FirebaseDatabase.instance.reference().child("events");
+  final dbRefEvents = FirebaseDatabase.instance.reference().child("events/");
   final dbRefComments =
       FirebaseDatabase.instance.reference().child("comments/");
 
@@ -130,8 +130,12 @@ class ParkDetailPageState extends State<ParkDetailPage> {
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(model.enderecoEquipUrbano,
-                        style: TextStyle(fontSize: 12), textAlign: TextAlign.justify,),),
+                      child: Text(
+                        model.enderecoEquipUrbano,
+                        style: TextStyle(fontSize: 12),
+                        textAlign: TextAlign.justify,
+                      ),
+                    ),
                     SizedBox(
                       height: 8,
                     ),
@@ -195,56 +199,65 @@ class ParkDetailPageState extends State<ParkDetailPage> {
                         SizedBox(
                           height: 8,
                         ),
-                        FutureBuilder(
-                            future: dbRefEvents.once(),
-                            builder: (context,
-                                AsyncSnapshot<DataSnapshot> snapshot) {
+                        StreamBuilder(
+                        stream: dbRefEvents
+                            .orderByChild("record_id")
+                            .equalTo(model.id)
+                            .onValue,
+                            builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 listsEevents.clear();
 
-                                List<dynamic> values = snapshot.data!.value;
+                                if ((snapshot.data! as Event).snapshot.value !=
+                                    null) {
+                                  final events = Map<String, dynamic>.from(
+                                      (snapshot.data! as Event).snapshot.value);
+                                  events.forEach((key, value) {
+                                    final nextEvent =
+                                        Map<String, dynamic>.from(value);
 
-                                values.forEach((values) {
-                                  final nextId =
-                                      Map<String, dynamic>.from(values);
-                                  final recordId = nextId['record_id'];
+                                    listsEevents.add(nextEvent);
+                                  });
 
-                                  if (recordId == model.id) {
-                                    listsEevents.add(values);
+                                  if (listsEevents.isNotEmpty) {
+                                    return new Container(
+                                      height: 40,
+                                      child: ListView.separated(
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount: listsEevents.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            final event = Events.fromJson(
+                                                listsEevents[index]);
+                                            return Container(
+                                              width: 200,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
+                                                border: Border.all(
+                                                    color:
+                                                        AppColors.defaultColor,
+                                                    width: 1.0),
+                                              ),
+                                              child: Text(event.name,
+                                                  style:
+                                                      TextStyle(fontSize: 16)),
+                                            );
+                                          },
+                                          separatorBuilder:
+                                              (BuildContext context,
+                                                      int index) =>
+                                                  SizedBox(
+                                                    width: 8,
+                                                  )),
+                                    );
+                                  } else {
+                                    return new Center(
+                                      child: Text('Sem eventos adicionados'),
+                                    );
                                   }
-                                });
-
-                                if (listsEevents.isNotEmpty) {
-                                  return new Container(
-                                    height: 40,
-                                    child: ListView.separated(
-                                        scrollDirection: Axis.horizontal,
-                                        shrinkWrap: true,
-                                        itemCount: listsEevents.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          final event = Events.fromJson(
-                                              listsEevents[index]);
-                                          return Container(
-                                            width: 200,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(5),
-                                              border: Border.all(
-                                                  color: AppColors.defaultColor,
-                                                  width: 1.0),
-                                            ),
-                                            child: Text(event.name,
-                                                style: TextStyle(fontSize: 16)),
-                                          );
-                                        },
-                                        separatorBuilder:
-                                            (BuildContext context, int index) =>
-                                                SizedBox(
-                                                  width: 8,
-                                                )),
-                                  );
                                 } else {
                                   return new Center(
                                     child: Text('Sem eventos adicionados'),
@@ -490,7 +503,10 @@ class ParkDetailPageState extends State<ParkDetailPage> {
                   backgroundImage: NetworkImage(user.photoURL!),
                 ),
                 SizedBox(width: 8),
-                Text(user.displayName!, style: TextStyle(fontSize: 12),)
+                Text(
+                  user.displayName!,
+                  style: TextStyle(fontSize: 12),
+                )
               ],
             ),
             content: Container(
