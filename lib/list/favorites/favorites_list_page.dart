@@ -32,7 +32,7 @@ class FavoritesListPageState extends State<FavoritesListPage> {
         Padding(
           padding: EdgeInsets.only(top: 100),
           child: StreamBuilder(
-              stream: dbRef.child('favorites').orderByKey().onValue,
+              stream: dbRef.child('favorites').orderByChild('id').equalTo(user.uid).onValue,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if ((snapshot.data! as Event).snapshot.value != null) {
@@ -41,11 +41,8 @@ class FavoritesListPageState extends State<FavoritesListPage> {
                     favorites.forEach((key, value) {
                       final nextFavorite = Map<String, dynamic>.from(value);
                       final favorite = nextFavorite['favorite'];
-                      final userId = nextFavorite['id'];
-
-                      if (userId == user.uid) {
-                        lists.add(favorite);
-                      }
+                     
+                      lists.add(favorite);
                     });
 
                     if (lists.isNotEmpty) {
