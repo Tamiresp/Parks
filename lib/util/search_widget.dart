@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatelessWidget {
+  TextEditingController controller = new TextEditingController();
+  dynamic onChanged;
+  SearchWidget(this.controller, this.onChanged);
   @override
   Widget build(BuildContext context) {
-    return _createSearch();
+    return _createSearch(controller, onChanged);
   }
 
-  Widget _createSearch() {
+  Widget _createSearch(TextEditingController controller, dynamic onChanged) {
     return Container(
         height: 35,
         margin: EdgeInsets.only(left: 16, right: 16),
@@ -19,6 +22,8 @@ class SearchWidget extends StatelessWidget {
         child: new TextFormField(
           cursorColor: Colors.black,
           keyboardType: TextInputType.text,
+          controller: controller,
+          onChanged: onChanged,
           decoration: new InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,

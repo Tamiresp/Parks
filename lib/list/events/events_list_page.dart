@@ -24,61 +24,83 @@ class EventsListPageState extends State<EventsListPage> {
   List<Map<dynamic, dynamic>> lists = [];
   List<Map<dynamic, dynamic>> records = [];
 
+  TextEditingController controller = new TextEditingController();
+  List<Events> _searchResult = [];
+  List<Events> _eventList = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
       children: [
         Padding(
-          padding: EdgeInsets.only(top: 100),
-          child: StreamBuilder(
-              stream: dbRef.onValue,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  lists.clear();
+            padding: EdgeInsets.only(top: 100),
+            child: _searchResult.length != 0 || controller.text.isNotEmpty
+                ? new ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _searchResult.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final event = _searchResult[index];
 
-                  if ((snapshot.data! as Event).snapshot.value != null) {
-                    final events = Map<String, dynamic>.from(
-                        (snapshot.data! as Event).snapshot.value);
-                    events.forEach((key, value) {
-                      final nextComment = Map<String, dynamic>.from(value);
+                      return GestureDetector(
+                        child: EventsItemPage(
+                          event: event,
+                        ),
+                        onTap: () {
+                          _getRecord(event);
+                        },
+                      );
+                    })
+                : new StreamBuilder(
+                    stream: dbRef.onValue,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        lists.clear();
+                        _eventList.clear();
 
-                      lists.add(nextComment);
-                    });
+                        if ((snapshot.data! as Event).snapshot.value != null) {
+                          final events = Map<String, dynamic>.from(
+                              (snapshot.data! as Event).snapshot.value);
+                          events.forEach((key, value) {
+                            final nextComment =
+                                Map<String, dynamic>.from(value);
 
-                    return new ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: lists.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final event = Events.fromJson(lists[index]);
-                          return GestureDetector(
-                            child: EventsItemPage(
-                              event: event,
-                            ),
-                            onTap: () {
-                              _getRecord(event);
-                            },
+                            lists.add(nextComment);
+                          });
+
+                          return new ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: lists.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final event = Events.fromJson(lists[index]);
+                                _eventList.add(event);
+                                return GestureDetector(
+                                  child: EventsItemPage(
+                                    event: event,
+                                  ),
+                                  onTap: () {
+                                    _getRecord(event);
+                                  },
+                                );
+                              });
+                        } else {
+                          return new Center(
+                            child: Text('Sem eventos adicionados'),
                           );
-                        });
-                  } else {
-                    return new Center(
-                      child: Text('Sem eventos adicionados'),
-                    );
-                  }
-                }
-                return Center(
-                  child:
-                      CircularProgressIndicator(color: AppColors.defaultColor),
-                );
-              }),
-        ),
+                        }
+                      }
+                      return Center(
+                        child: CircularProgressIndicator(
+                            color: AppColors.defaultColor),
+                      );
+                    })),
         Column(
           children: [
             TitleWidget("Eventos"),
             SizedBox(
               height: 16,
             ),
-            SearchWidget()
+            _createSearch()
           ],
         ),
       ],
@@ -110,5 +132,26 @@ class EventsListPageState extends State<EventsListPage> {
         _navigateToParkListPage(context: context, records: record);
       }
     });
+  }
+
+  Widget _createSearch() {
+    return SearchWidget(controller, onSearchTextChanged);
+  }
+
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    _eventList.forEach((event) {
+      if (event.name.toLowerCase().contains(text.toLowerCase())) {
+        _searchResult.add(event);
+      }
+    });
+
+    setState(() {});
   }
 }

@@ -19,6 +19,10 @@ class ParkListPageState extends State<ParksListPage> {
 
   List<Map<dynamic, dynamic>> lists = [];
 
+  TextEditingController controller = new TextEditingController();
+  List<Records> _searchResult = [];
+  List<Records> _recordsList = [];
+
   @override
   Widget build(BuildContext context) {
     final dbRefRecords = dbRef.child("records");
@@ -28,38 +32,57 @@ class ParkListPageState extends State<ParksListPage> {
       children: [
         Padding(
           padding: EdgeInsets.only(top: 100),
-          child: FutureBuilder(
-              future: dbRefRecords.once(),
-              builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-                if (snapshot.hasData) {
-                  lists.clear();
-                  List<dynamic> values = snapshot.data!.value;
+          child: _searchResult.length != 0 || controller.text.isNotEmpty
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _searchResult.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final record = _searchResult[index];
+                    return GestureDetector(
+                      child: ParkItem(
+                        record: record,
+                        dbRef: dbRefFavorites,
+                      ),
+                      onTap: () {
+                        navigateToParkDetailPage(
+                            context: context, model: record);
+                      },
+                    );
+                  })
+              : FutureBuilder(
+                  future: dbRefRecords.once(),
+                  builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+                    if (snapshot.hasData) {
+                      lists.clear();
+                      _recordsList.clear();
+                      List<dynamic> values = snapshot.data!.value;
 
-                  values.forEach((values) {
-                    lists.add(values);
-                  });
-                  return new ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: lists.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final record = Records.fromJson(lists[index]);
-                        return GestureDetector(
-                          child: ParkItem(
-                            record: record,
-                            dbRef: dbRefFavorites,
-                          ),
-                          onTap: () {
-                            navigateToParkDetailPage(
-                                context: context, model: record);
-                          },
-                        );
+                      values.forEach((values) {
+                        lists.add(values);
                       });
-                }
-                return Center(
-                  child:
-                      CircularProgressIndicator(color: AppColors.defaultColor),
-                );
-              }),
+                      return new ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: lists.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final record = Records.fromJson(lists[index]);
+                            _recordsList.add(record);
+                            return GestureDetector(
+                              child: ParkItem(
+                                record: record,
+                                dbRef: dbRefFavorites,
+                              ),
+                              onTap: () {
+                                navigateToParkDetailPage(
+                                    context: context, model: record);
+                              },
+                            );
+                          });
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(
+                          color: AppColors.defaultColor),
+                    );
+                  }),
         ),
         Column(
           children: [
@@ -67,7 +90,7 @@ class ParkListPageState extends State<ParksListPage> {
             SizedBox(
               height: 16,
             ),
-            SearchWidget()
+            _createSearch()
           ],
         ),
       ],
@@ -78,5 +101,29 @@ class ParkListPageState extends State<ParksListPage> {
       {required BuildContext context, required Records model}) {
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => ParkDetailPage(model)));
+  }
+
+  Widget _createSearch() {
+    return SearchWidget(controller, onSearchTextChanged);
+  }
+
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    _recordsList.forEach((event) {
+      if (event.nomeOficialEquipUrbano
+              .toLowerCase()
+              .contains(text.toLowerCase()) ||
+          event.nomeEquipUrbano.toLowerCase().contains(text.toLowerCase())) {
+        _searchResult.add(event);
+      }
+    });
+
+    setState(() {});
   }
 }

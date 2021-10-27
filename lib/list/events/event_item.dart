@@ -21,12 +21,34 @@ class EventItemPageState extends State<EventsItemPage> {
         height: 50,
         color: Colors.white,
         margin: EdgeInsets.only(left: 16, right: 16, top: 8),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            event.name,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    event.name,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    event.date,
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w400),
+                  ),
+                )
+              ],
+            )
+          ],
         ));
   }
 }
