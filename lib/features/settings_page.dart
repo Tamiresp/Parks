@@ -34,7 +34,7 @@ class SettingsPage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(left: 16, top: 80),
                   child: Text(
-                    AppStrings.settingsText,
+                    AppStrings.profileText,
                     style: TextStyle(
                         color: AppColors.primaryTextColor,
                         fontWeight: FontWeight.bold,

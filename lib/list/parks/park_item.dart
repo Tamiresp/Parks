@@ -25,10 +25,14 @@ class ParkItemState extends State<ParkItem> {
   final dbRefComments =
       FirebaseDatabase.instance.reference().child("comments/");
 
+  final dbRefFavorites =
+      FirebaseDatabase.instance.reference().child("favorites/");
+
   var isPressed = false;
   List<double> ratings = [];
   double average = 0.0;
   List<Map<dynamic, dynamic>> listsComments = [];
+  List<Records> favorites = [];
 
   @override
   void initState() {
@@ -155,14 +159,6 @@ class ParkItemState extends State<ParkItem> {
     dbRef.push().set({'id': uid, 'favorite': record.toJson()});
   }
 
-  Future<bool> isSameUser() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final User user = _auth.currentUser!;
-    DataSnapshot snapshot =
-        await dbRef.orderByChild("id").equalTo(user.uid).once();
-    return snapshot.exists;
-  }
-
   Future<void> _deleteFavorite(Records record) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final User user = _auth.currentUser!;
@@ -183,30 +179,40 @@ class ParkItemState extends State<ParkItem> {
   }
 
   Future<bool> existsData() async {
-    final isUser = await isSameUser();
-    if (isUser) {
-      DataSnapshot snapshot =
-          await dbRef.orderByChild("favorite/id").equalTo(record.id).once();
-      return snapshot.exists;
-    } else {
-      return false;
-    }
-  }
-
-  Future<void> setIsPressed() async {
-    final isFavorite = await existsData();
-    if (isFavorite) {
-      setState(() {
-        isPressed = true;
-      });
-    } else {
-      setState(() {
-        isPressed = false;
-      });
-    }
+    bool hasFavorite = false;
+    favorites.forEach((element) {
+      if (element.id == record.id) {
+        hasFavorite = true;
+      }
+    });
+    return hasFavorite;
   }
 
   _ratingAverage() {
     average = (ratings.reduce((a, b) => a + b) / ratings.length);
+  }
+
+  Future<void> setIsPressed() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User user = _auth.currentUser!;
+    dbRefFavorites
+        .orderByChild('id')
+        .equalTo(user.uid)
+        .once()
+        .then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> children = snapshot.value;
+      children.forEach((key, value) {
+        final favorite = Map<String, dynamic>.from(value);
+        final favoriteItem = favorite["favorite"];
+        var list = Records.fromJson(favoriteItem);
+        favorites.add(list);
+
+        if (list.id == record.id) {
+          setState(() {
+            isPressed = true;
+          });
+        }
+      });
+    });
   }
 }

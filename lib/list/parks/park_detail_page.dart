@@ -39,6 +39,7 @@ class ParkDetailPageState extends State<ParkDetailPage> {
   List<Map<dynamic, dynamic>> listsEevents = [];
 
   List<num> ratings = [];
+  List<Records> favorites = [];
 
   @override
   void initState() {
@@ -464,31 +465,38 @@ class ParkDetailPageState extends State<ParkDetailPage> {
   }
 
   Future<bool> existsData() async {
-    final isUser = await isSameUser();
-    if (isUser) {
-      DataSnapshot snapshot = await dbRefFavorites
-          .orderByChild("favorite/id")
-          .equalTo(model.id)
-          .once();
-      return snapshot.exists;
-    } else {
-      return false;
-    }
+    bool hasFavorite = false;
+    favorites.forEach((element) {
+      if (element.id == model.id) {
+        hasFavorite = true;
+      }
+    });
+    return hasFavorite;
   }
 
-  Future<void> setIsPressed() async {
-    final isFavorite = await existsData();
-    if (isFavorite) {
-      setState(() {
-        isPressed = true;
-      });
-    } else {
-      setState(() {
-        isPressed = false;
-      });
-    }
-  }
+ Future<void> setIsPressed() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User user = _auth.currentUser!;
+    dbRefFavorites
+        .orderByChild('id')
+        .equalTo(user.uid)
+        .once()
+        .then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> children = snapshot.value;
+      children.forEach((key, value) {
+        final favorite = Map<String, dynamic>.from(value);
+        final favoriteItem = favorite["favorite"];
+        var list = Records.fromJson(favoriteItem);
+        favorites.add(list);
 
+        if (list.id == model.id) {
+          setState(() {
+            isPressed = true;
+          });
+        }
+      });
+    });
+  }
   Future<void> _displayCommentDialog(BuildContext context) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final User user = _auth.currentUser!;
