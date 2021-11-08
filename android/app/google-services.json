@@ -1,7 +1,6 @@
 {
   "project_info": {
     "project_number": "988674611265",
-    "firebase_url": "https://parksproject-e606b-default-rtdb.firebaseio.com",
     "project_id": "parksproject-e606b",
     "storage_bucket": "parksproject-e606b.appspot.com"
   },
@@ -15,11 +14,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "988674611265-csd9obs7usj7fst28enu7572mmu2ss7c.apps.googleusercontent.com",
+          "client_id": "988674611265-o2saqd9ol299bbi2tr2f925eqd5gf84n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.parks",
-            "certificate_hash": "d426053adb5e59ac7d654f6b52b93cad976c5fab"
+            "certificate_hash": "538e97f3e70d1a870d30df576f4e203f4baa91d1"
           }
         },
         {

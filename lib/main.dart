@@ -11,6 +11,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ChangeNotifierProvider(
         create: (context) => SignInProvider(),
-        child: MaterialApp(home: Splash()),
+        child: MaterialApp(home: Splash(), debugShowCheckedModeBanner: false,),
       );
 }

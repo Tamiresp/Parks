@@ -31,8 +31,10 @@ dependencies:
   flutter_login_facebook:
   firebase_auth: 
   firebase_core:
-  google_sign_in: 
-  provider: 
+  google_sign_in: ^5.1.0
+  provider: ^6.0.0
+  fluttertoast: ^8.0.8
+  toast: ^0.1.5
   font_awesome_flutter: ^9.1.0
 
 dev_dependencies:
