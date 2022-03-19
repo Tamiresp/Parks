@@ -109,9 +109,6 @@ class EventsListPageState extends State<EventsListPage> {
 
   _navigateToParkListPage(
       {required BuildContext context, required Records records}) {
-    Center(
-      child: CircularProgressIndicator(color: AppColors.defaultColor),
-    );
     Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => ParkDetailPage(records)));
   }

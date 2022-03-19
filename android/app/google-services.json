@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "988674611265-f60fpf9sek3aaiud0dqunt7esso1jhai.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.parks",
+            "certificate_hash": "538e97f3e70d1a870d30df576f4e203f4baa91d1"
+          }
+        },
+        {
           "client_id": "988674611265-5tojbgt6cphnb7l75ce0rb15jg39g2om.apps.googleusercontent.com",
           "client_type": 3
         }
