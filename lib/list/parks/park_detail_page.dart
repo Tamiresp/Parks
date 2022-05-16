@@ -466,8 +466,6 @@ class ParkDetailPageState extends State<ParkDetailPage> {
   }
 
   Future<void> setAverage() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    final User user = _auth.currentUser!;
     dbRefComments
         .orderByChild("id")
         .equalTo(model.id)
@@ -475,11 +473,11 @@ class ParkDetailPageState extends State<ParkDetailPage> {
         .then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> children = snapshot.value;
       children.forEach((key, value) {
-        final favorite = Map<String, dynamic>.from(value);
-        final favoriteItem = favorite["rate"];
+        final rates = Map<String, dynamic>.from(value);
+        final rating = rates["rate"];
 
-        listsComments.add(favorite);
-        ratings.add(favoriteItem);
+        listsComments.add(rates);
+        ratings.add(rating);
         _ratingAverage();
       });
     });
