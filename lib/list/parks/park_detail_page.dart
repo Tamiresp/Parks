@@ -45,6 +45,7 @@ class ParkDetailPageState extends State<ParkDetailPage> {
   void initState() {
     super.initState();
     setIsPressed();
+    setAverage();
   }
 
   @override
@@ -201,10 +202,10 @@ class ParkDetailPageState extends State<ParkDetailPage> {
                           height: 8,
                         ),
                         StreamBuilder(
-                        stream: dbRefEvents
-                            .orderByChild("record_id")
-                            .equalTo(model.id)
-                            .onValue,
+                            stream: dbRefEvents
+                                .orderByChild("record_id")
+                                .equalTo(model.id)
+                                .onValue,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 listsEevents.clear();
@@ -464,6 +465,26 @@ class ParkDetailPageState extends State<ParkDetailPage> {
     });
   }
 
+  Future<void> setAverage() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User user = _auth.currentUser!;
+    dbRefComments
+        .orderByChild("id")
+        .equalTo(model.id)
+        .once()
+        .then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> children = snapshot.value;
+      children.forEach((key, value) {
+        final favorite = Map<String, dynamic>.from(value);
+        final favoriteItem = favorite["rate"];
+
+        listsComments.add(favorite);
+        ratings.add(favoriteItem);
+        _ratingAverage();
+      });
+    });
+  }
+
   Future<bool> existsData() async {
     bool hasFavorite = false;
     favorites.forEach((element) {
@@ -474,7 +495,7 @@ class ParkDetailPageState extends State<ParkDetailPage> {
     return hasFavorite;
   }
 
- Future<void> setIsPressed() async {
+  Future<void> setIsPressed() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final User user = _auth.currentUser!;
     dbRefFavorites
@@ -497,6 +518,7 @@ class ParkDetailPageState extends State<ParkDetailPage> {
       });
     });
   }
+
   Future<void> _displayCommentDialog(BuildContext context) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     final User user = _auth.currentUser!;
